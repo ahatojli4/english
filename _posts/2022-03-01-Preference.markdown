@@ -1,4 +1,6 @@
-# Preference
+---
+title: Preference
+---
 
 ## Useful language
 
@@ -8,7 +10,3 @@
 - Given the choice, I'd ...
 - If I had the choice, I'd ...
 - Taking everything into consideration, V-ing would be better for me. (Принимая все во внимание...)
-
-
-#english/vocabluary/expressions
-#2022/03
