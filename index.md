@@ -1,6 +1,10 @@
 ---
 layout: home
-title: Welcome to my blog
+title: English notes
+list_title: Notes
 ---
 
-Description of `index.md` file. 
+Here you can find my notes from english classes.
+
+Hope it would be useful for you.
+
