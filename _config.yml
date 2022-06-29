@@ -1,6 +1,8 @@
 theme: minima
+minima:
+    skin: solarized
 
-title: try change title
-description: try add description
-author: custom_author
+title: English
+#description: try add description # description in footer (bottom-right corner)
+#author: custom_author # author name (bottom-left corner)
 
