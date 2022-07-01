@@ -1,10 +1,12 @@
 {{define "main"}}
-    <h2 class="text-2xl">English notes</h2>
-    <div class="columns-1 space-y-4">
-        {{range .}}
-            <div class="text-lg">
-                <a href="/list/{{.}}">{{.}}</a>
-            </div>
-        {{end}}
+    <div class="py-3">
+        <h2>English notes</h2>
+        <div class="vstack gap-3">
+            {{range .}}
+                <div>
+                    <a href="/list/{{.}}">{{.}}</a>
+                </div>
+            {{end}}
+        </div>
     </div>
 {{end}}

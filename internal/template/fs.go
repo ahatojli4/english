@@ -11,6 +11,7 @@ var (
 
 	tmplIndex  *template.Template
 	tmplDetail *template.Template
+	debug      bool
 )
 
 func init() {
@@ -18,10 +19,22 @@ func init() {
 	tmplDetail = template.Must(template.ParseFS(dir, "*/base.gohtml", "*/detail.gohtml"))
 }
 
+func Init(needReload bool) {
+	debug = needReload
+}
+
 func Index() *template.Template {
+	if debug {
+		tmplIndex = template.Must(template.ParseFiles("internal/template/resources/base.gohtml", "internal/template/resources/index.gohtml"))
+	}
+
 	return tmplIndex
 }
 
 func Detail() *template.Template {
+	if debug {
+		tmplDetail = template.Must(template.ParseFiles("internal/template/resources/base.gohtml", "internal/template/resources/detail.gohtml"))
+	}
+
 	return tmplDetail
 }
