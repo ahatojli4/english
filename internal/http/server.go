@@ -5,8 +5,6 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/gomarkdown/markdown"
-
 	"github.com/ahatojli4/english/internal/posts"
 	t "github.com/ahatojli4/english/internal/template"
 )
@@ -26,17 +24,23 @@ func Start(port string) error {
 
 func index(writer http.ResponseWriter, request *http.Request) {
 	tmpl := t.Index()
-	postNames := posts.GetFileNames()
-	//fmt.Println(postNames)
-	/*for i := 0; i < len(tmpl.DefinedTemplates()); i++ {
-
-	}*/
-	err := tmpl.ExecuteTemplate(writer, "base", postNames)
+	noteList := posts.GetNoteList()
+	data := t.DataList{
+		Items: make([]t.DataDetail, 0, len(noteList)),
+	}
+	for _, note := range noteList {
+		data.Items = append(data.Items, t.DataDetail{
+			Title:      note.GetTitle(),
+			FileName:   note.GetFileName(),
+			DateCreate: note.GetDateCreated(),
+		})
+	}
+	err := tmpl.ExecuteTemplate(writer, "base", data)
 	if err != nil {
 		//todo: add logger
 		return
 	}
-	//err = tmpl.ExecuteTemplate(writer, "main", postNames)
+	//err = tmpl.ExecuteTemplate(writer, "main", noteList)
 	//if err != nil {
 	//	//todo: add logger
 	//	return
@@ -52,15 +56,19 @@ func detail(writer http.ResponseWriter, request *http.Request) {
 		index(writer, request)
 		return
 	}
-	content := posts.GetContent(slug)
-	html := markdown.ToHTML(content, nil, nil)
+	note := posts.GetNote(slug)
+	data := t.DataDetail{
+		Title:      note.GetTitle(),
+		DateCreate: note.GetDateCreated(),
+		Content:    template.HTML(note.GetContent()),
+	}
 	tmpl := t.Detail()
-	err := tmpl.ExecuteTemplate(writer, "base", template.HTML(html))
+	err := tmpl.ExecuteTemplate(writer, "base", data)
 	if err != nil {
 		//todo: add logger
 		return
 	}
-	//err = tmpl.ExecuteTemplate(writer, "main", string(content))
+	//err = tmpl.ExecuteTemplate(writer, "main", string(note))
 	//if err != nil {
 	//	//todo: add logger
 	//	return

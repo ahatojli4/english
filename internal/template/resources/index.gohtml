@@ -2,9 +2,12 @@
     <div class="py-3">
         <h2>English notes</h2>
         <div class="vstack gap-3">
-            {{range .}}
+            {{range .Items}}
                 <div>
-                    <a href="/list/{{.}}">{{.}}</a>
+                    <a href="/list/{{.FileName}}">{{.Title}}</a>
+{{/*                    <div class="text-muted">*/}}
+{{/*                        <time datetime="{{.DateCreate}}">{{.DateCreate}}</time>*/}}
+{{/*                    </div>*/}}
                 </div>
             {{end}}
         </div>

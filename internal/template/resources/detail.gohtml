@@ -1,7 +1,11 @@
 {{define "main"}}
     <div class="py-3">
         <article>
-            {{.}}
+            <h1>{{.Title}}</h1>
+            <div class="text-muted">
+                <time datetime="{{.DateCreate}}">{{.DateCreate}}</time>
+            </div>
+            {{.Content}}
         </article>
         <div>
             <a href="/" class="link-success">Go to list</a>

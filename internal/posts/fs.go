@@ -4,6 +4,7 @@ import (
 	"embed"
 	"fmt"
 	"path/filepath"
+	"sort"
 	"strings"
 )
 
@@ -11,7 +12,8 @@ var (
 	//go:embed resources
 	dir embed.FS
 
-	mapFiles map[string][]byte
+	notes    []*note
+	mapNotes map[string]int
 )
 
 func init() {
@@ -20,8 +22,9 @@ func init() {
 		// todo: add logger
 		panic(err)
 	}
-	mapFiles = make(map[string][]byte, len(entries))
-	for _, entry := range entries {
+	notes = make([]*note, 0, len(entries))
+	mapNotes = make(map[string]int, len(entries))
+	for i, entry := range entries {
 		file, err := dir.ReadFile(filepath.Join("resources", entry.Name()))
 		if err != nil {
 			// todo: add logger
@@ -33,25 +36,34 @@ func init() {
 			fmt.Println("recursive walking dir doesn't support")
 			continue
 		}
-		mapFiles[strings.ToLower(entry.Name())] = file
+		entryName := strings.ToLower(entry.Name())
+		n := newNote(entryName, file)
+		notes = append(notes, n)
+		mapNotes[entryName] = i
+	}
+	sort.Sort(byDate(notes))
+	for i, n := range notes {
+		mapNotes[n.fileName] = i
 	}
 }
 
-// todo: add sorting by date
-func GetFileNames() []string {
-	keys := make([]string, 0, len(mapFiles))
-	for k := range mapFiles {
-		keys = append(keys, k)
+func GetNoteList() []Note {
+	res := make([]Note, 0, len(notes))
+	for i := range notes {
+		res = append(res, Note(notes[i]))
 	}
 
-	return keys
+	return res
 }
 
-func GetContent(fileName string) []byte {
-	content, ok := mapFiles[strings.ToLower(fileName)]
+func GetNote(fileName string) Note {
+	index, ok := mapNotes[strings.ToLower(fileName)]
 	if !ok {
-		return []byte("404")
+		return &note{
+			fileName: fileName,
+			content:  []byte("404"),
+		}
 	}
 
-	return content
+	return notes[index]
 }
