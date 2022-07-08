@@ -25,18 +25,24 @@ func newNote(fileName string, rawContent []byte) *note {
 		rawContent: rawContent,
 	}
 	astTree := markdown.Parse(rawContent, parser.New())
+	toRemove := make([]ast.Node, 0)
 	ast.WalkFunc(astTree, func(node ast.Node, entering bool) ast.WalkStatus {
 		switch h := node.(type) {
 		case *ast.Heading:
-			if h.IsSpecial {
+			if h.IsSpecial && !entering {
 				parseSpecialHeader(n, string(h.Literal))
-				ast.RemoveFromTree(node)
+				toRemove = append(toRemove, h)
+
+				return ast.GoToNext
 			}
 		default:
 		}
 
 		return ast.GoToNext
 	})
+	for i := range toRemove {
+		ast.RemoveFromTree(toRemove[i])
+	}
 	opts := html.RendererOptions{
 		Flags: html.CommonFlags,
 	}
@@ -87,7 +93,7 @@ func (n *note) GetFileName() string {
 func parseSpecialHeader(p *note, s string) {
 	elements := strings.Split(s, ":")
 	if len(elements) != 2 {
-		fmt.Println("Invalid special header: %s", s)
+		fmt.Println("Invalid special header:", s)
 		return
 	}
 	key, value := strings.TrimSpace(elements[0]), strings.TrimSpace(elements[1])

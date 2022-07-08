@@ -3,12 +3,11 @@
         <h2>English notes</h2>
         <div class="vstack gap-3">
             {{range .Items}}
-                <div>
-                    <span>Test</span>
-                    <a href="/list/{{.FileName}}">{{.Title}}</a>
-{{/*                    <div class="text-muted">*/}}
-{{/*                        <time datetime="{{.DateCreate}}">{{.DateCreate}}</time>*/}}
-{{/*                    </div>*/}}
+                <div class="d-inline-flex">
+                    <a class="pe-2" href="/list/{{.FileName}}">{{.Title}}</a>
+                    <div class="text-muted">
+                        <time datetime="{{.DateCreate.Format "2006-01-02"}}">{{.DateCreate.Format "2006-01-02"}}</time>
+                    </div>
                 </div>
             {{end}}
         </div>
