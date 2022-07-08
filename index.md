@@ -1,4 +1,3 @@
----
 layout: home
 title: English notes
 list_title: Notes

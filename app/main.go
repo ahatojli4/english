@@ -16,7 +16,7 @@ func main() {
 	flag.Parse()
 	template.Init(*reloadTemplates)
 
-	//fmt.Println(posts.GetFileNames())
+	//fmt.Println(notes.GetFileNames())
 
 	//tmplIndex := template.GetTemplate("base.gohtml")
 

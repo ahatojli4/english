@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/ahatojli4/english/internal/posts"
+	"github.com/ahatojli4/english/internal/notes"
 	t "github.com/ahatojli4/english/internal/template"
 )
 
@@ -24,7 +24,7 @@ func Start(port string) error {
 
 func index(writer http.ResponseWriter, request *http.Request) {
 	tmpl := t.Index()
-	noteList := posts.GetNoteList()
+	noteList := notes.GetNoteList()
 	data := t.DataList{
 		Items: make([]t.DataDetail, 0, len(noteList)),
 	}
@@ -56,7 +56,7 @@ func detail(writer http.ResponseWriter, request *http.Request) {
 		index(writer, request)
 		return
 	}
-	note := posts.GetNote(slug)
+	note := notes.GetNote(slug)
 	data := t.DataDetail{
 		Title:      note.GetTitle(),
 		DateCreate: note.GetDateCreated(),
